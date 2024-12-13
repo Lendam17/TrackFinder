@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <h1>Liste des circuits dans le département </h1>
+    <h1>Liste des circuits dans le département {{ departmentName || "..." }}</h1>
     <table id="table-circuit" v-if="circuits.length > 0">
       <thead>
         <tr>
@@ -47,25 +47,47 @@ export default {
     goToDetails(id) {
       this.$router.push(`/track/${id}`); // Redirection vers la page des détails
     },
+    fetchDepartmentName(departmentId) {
+      // Récupérer tous les départements et rechercher le bon
+      axios
+        .get("http://localhost:5000/departments") // Route existante pour tous les départements
+        .then((response) => {
+          const department = response.data.find(
+            (d) => d.id === parseInt(departmentId)
+          );
+          if (department) {
+            this.departmentName = department.name; // Définir le nom
+          } else {
+            this.error = "Département non trouvé.";
+          }
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des départements :", error);
+          this.error = "Impossible de charger le nom du département.";
+        });
+    },
+    fetchCircuits(departmentId) {
+      // Récupérer les circuits pour le département donné
+      axios
+        .get(`http://localhost:5000/tracks?department_id=${departmentId}`)
+        .then((response) => {
+          this.circuits = response.data;
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des circuits :", error);
+          this.error = "Impossible de charger les circuits.";
+        });
+    },
   },
   mounted() {
-    const departmentId = this.$route.params.id; // Utilisation de params au lieu de query
-    console.log("Department ID:", departmentId); // Debugging
+    const departmentId = this.$route.params.id;
     if (!departmentId) {
       this.error = "Aucun département sélectionné.";
       return;
     }
 
-    axios
-      .get(`http://localhost:5000/tracks?department_id=${departmentId}`)
-      .then((response) => {
-        console.log("Données API reçues :", response.data); // Debugging
-        this.circuits = response.data;
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des circuits :", error);
-        this.error = "Impossible de charger les circuits.";
-      });
+    this.fetchDepartmentName(departmentId); // Récupérer le nom du département
+    this.fetchCircuits(departmentId); // Récupérer les circuits
   },
 };
 </script>
@@ -74,6 +96,10 @@ export default {
 
 .main-container {
   text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
 }
 
 /* === Tableau === */
@@ -90,7 +116,7 @@ export default {
 th, td {
   border-bottom: 1px solid #94969855; /* Couleur des bordures des cellules */
   padding: 8px; /* Espacement interne pour améliorer la lisibilité */
-  text-align: left; /* Alignement du texte */
+  text-align: center; /* Alignement du texte */
 }
 
 
@@ -104,12 +130,16 @@ th, td {
 
 /* Écran d'ordinateur portable (appareils moyens à larges) */
 @media (max-width: 1024px) {
-  
+  h1 {
+  font-size: 2.5rem;
+}
 }
 
 /* Écran de tablette (petits à moyens appareils) */
 @media (max-width: 768px) {
-  
+  h1 {
+  font-size: 2rem;
+}
 }
 
 /* Écran de téléphone mobile (petits appareils) */
