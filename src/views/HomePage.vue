@@ -1,8 +1,10 @@
 <template>
-  <div class="homepage-container">
+  <div id="title-container" class="container">
     <h1 class="title">
       Bienvenue sur TrackFinder, votre guide des circuits de motocross
     </h1>
+  </div>
+  <div class="homepage-container">
     <div class="select-container">
       <div class="custom-select">
         <div class="select-trigger" @click="toggleOptions">
@@ -86,6 +88,10 @@ export default {
 }
 
 /* Style pour le titre */
+#title-container {
+  text-align: center;
+  padding-top: 50px;
+}
 .title {
   font-size: 2.5rem;
   text-align: center;
@@ -109,7 +115,6 @@ export default {
   border: 1px solid #ff3b34;
   cursor: pointer;
   text-align: center;
-  
 }
 
 .options {

@@ -82,7 +82,7 @@ export default {
 
 /* Menu desktop */
 ul.hide-on-med-and-down li a {
-  color: #949698; /* Couleur des liens */
+  color: #eeeeee; /* Couleur des liens */
   font-size: 1rem;
   padding: 0 15px;
   font-weight: 600;

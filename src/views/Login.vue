@@ -1,16 +1,18 @@
 <template>
-  <div class="container">
+  <div id="title-container" class="container">
+    <h3>Connexion</h3>
+  </div>
+  <div id="input-container" class="container">
     <form @submit.prevent="handleLogin">
-      <h3>Connexion</h3>
       <div>
         <label for="email">Email :</label>
         <input v-model="email" type="email" required />
       </div>
       <div>
         <label for="password">Mot de passe :</label>
-        <input v-model="password" type="password" required />
+        <input class="input" v-model="password" type="password" required />
       </div>
-      <button type="submit">Se connecter</button>
+      <button id="btn-connexion" type="submit">Se connecter</button>
       <p v-if="error" class="error">{{ error }}</p>
     </form>
   </div>
@@ -32,7 +34,10 @@ export default {
         const response = await fetch("http://localhost:5000/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email.value, password: password.value }),
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+          }),
         });
 
         const data = await response.json();
@@ -59,7 +64,46 @@ export default {
 </script>
 
 <style>
-.error {
-  color: red;
+#title-container {
+  text-align: center;
+  padding: 20px 0;
+}
+
+#input-container {
+  width: 500px;
+}
+
+/* Change la couleur de la barre focus sous les inputs */
+input:focus {
+  border-bottom: 1px solid #ff3b34 !important; /* Couleur de la barre */
+  box-shadow: 0 1px 0 0 #ff3b34 !important; /* Supprime l'effet vert par défaut */
+}
+
+/* Boutton Connexion */
+#btn-connexion {
+  background-color: #ff3b34;
+  padding: 8px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+/* === Responsive === */
+
+@media (max-width: 992px) {
+  #input-container {
+  width: 40vw;
+}
+}
+
+@media (max-width: 768px) {
+  #input-container {
+  width: 50vw;
+}
+}
+
+@media (max-width: 600px) {
+  #input-container {
+  width: 60vw;
+}
 }
 </style>
