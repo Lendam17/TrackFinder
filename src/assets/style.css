@@ -1,0 +1,88 @@
+:root {
+    /* Couleur principale */
+    --primary-color: #0091EA; /* Bleu principal */
+    --primary-light: #40C4FF; /* Bleu clair */
+    --primary-dark: #01579B; /* Bleu foncé */
+  
+    /* Couleur secondaire */
+    --secondary-color: #3C3C3C; /* Gris principal */
+    --secondary-light: #757575; /* Gris clair */
+    --secondary-dark: #212121; /* Gris foncé */
+  
+    /* Couleurs neutres */
+    --background-color: #FAFAFA; /* Fond général */
+    --surface-color: #FFFFFF; /* Fond des surfaces */
+    --text-primary: #212121; /* Texte principal */
+    --text-secondary: #757575; /* Texte secondaire */
+  
+    /* Actions */
+    --error-color: #D32F2F; /* Rouge pour erreurs */
+    --success-color: #9eb19f; /* Vert pour succès */
+    --warning-color: #FBC02D; /* Jaune pour avertissements */
+  }
+  
+
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styles globaux */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* Style global pour les barres de défilement */
+:root {
+    --scrollbar-bg: var(--secondary-light); /* Couleur de la piste */
+    --scrollbar-thumb: var(--secondary-dark); /* Couleur de la glissière */
+  }
+  
+  /* Style de la barre de défilement */
+  ::-webkit-scrollbar {
+    width: 8px; /* Largeur verticale */
+    height: 8px; /* Hauteur horizontale */
+  }
+  
+  /* Piste de la barre de défilement */
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-bg); /* Couleur de la piste */
+  }
+  
+  /* Glissière de la barre de défilement */
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb); /* Couleur de la glissière */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Espace autour de la glissière */
+    background-clip: padding-box; /* Crée un effet d'espace autour */
+  }
+  
+  /* Barres de défilement sur les conteneurs spécifiques (optionnel) */
+  .container {
+    scrollbar-width: thin; /* Firefox: largeur fine */
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); /* Firefox: couleurs */
+  }
+  
