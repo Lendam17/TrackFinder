@@ -1,10 +1,11 @@
 <template>
-  <div>
-    <h1>Liste des circuits</h1>
-    <table v-if="circuits.length > 0">
+  <div class="main-container">
+    <h1>Liste des circuits dans le département </h1>
+    <table id="table-circuit" v-if="circuits.length > 0">
       <thead>
         <tr>
           <th>Nom</th>
+          <th>Ville</th>
           <th>Type</th>
           <th>Terrain</th>
           <th>Véhicules autorisés</th>
@@ -17,7 +18,8 @@
           class="clickable-row"
           @click="goToDetails(track.id)"
         >
-          <td>{{ track.name }}</td>
+          <td>{{ track.name || "Non spécifié" }}</td>
+          <td>{{ track.city || "Non spécifié" }}</td>
           <td>{{ track.track_types || "Non spécifié" }}</td>
           <td>{{ track.terrain_type || "Non spécifié" }}</td>
           <td>{{ track.vehicles_allowed || "Non spécifié" }}</td>
@@ -37,6 +39,7 @@ export default {
   data() {
     return {
       circuits: [], // Liste des circuits
+      departmentName: "", // Nom du département
       error: null, // Message d'erreur
     };
   },
@@ -68,34 +71,56 @@ export default {
 </script>
 
 <style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
+
+.main-container {
+  text-align: center;
 }
 
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+/* === Tableau === */
+#table-circuit th {
+  color: #ff3b34;
+  text-align: center;
+  font-weight: 700;
 }
-
-th {
-  background-color: #f4f4f4;
-}
-
-.clickable-row {
+#table-circuit td {
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.2s;
+}
+/* Change la couleur des bordures des cellules */
+th, td {
+  border-bottom: 1px solid #94969855; /* Couleur des bordures des cellules */
+  padding: 8px; /* Espacement interne pour améliorer la lisibilité */
+  text-align: left; /* Alignement du texte */
 }
 
-.clickable-row:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+
+
+
+/* === Responsive === */
+
+/* Écran de bureau ou grand écran */
+@media (min-width: 1200px) {
 }
 
-.error {
-  color: red;
-  margin-top: 20px;
+/* Écran d'ordinateur portable (appareils moyens à larges) */
+@media (max-width: 1024px) {
+  
 }
+
+/* Écran de tablette (petits à moyens appareils) */
+@media (max-width: 768px) {
+  
+}
+
+/* Écran de téléphone mobile (petits appareils) */
+@media (max-width: 600px) {
+  #table-circuit th {
+    font-size: 12px;
+}
+#table-circuit td {
+  font-size: 12px;
+}
+}
+
+
 </style>

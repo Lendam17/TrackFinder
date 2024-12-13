@@ -1,22 +1,24 @@
 <template>
   <div class="homepage-container">
-    <h1 class="title">Bienvenue sur TrackFinder, votre guide des circuits de motocross</h1>
+    <h1 class="title">
+      Bienvenue sur TrackFinder, votre guide des circuits de motocross
+    </h1>
     <div class="select-container">
-      <select
-        id="departments"
-        v-model="selectedDepartment"
-        @change="goToDepartment"
-        class="browser-default"
-      >
-        <option disabled value="">Sélectionnez un département</option>
-        <option
-          v-for="department in departments"
-          :key="department.id"
-          :value="department.id"
-        >
-          {{ department.code }} - {{ department.name }}
-        </option>
-      </select>
+      <div class="custom-select">
+        <div class="select-trigger" @click="toggleOptions">
+          {{ selectedDepartmentLabel || "Sélectionnez un département" }}
+        </div>
+        <ul v-if="showOptions" class="options">
+          <li
+            v-for="department in departments"
+            :key="department.id"
+            @click="selectDepartment(department.id, department.label)"
+            class="option"
+          >
+            {{ department.code }} - {{ department.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -30,7 +32,9 @@ export default {
   name: "HomePage",
   setup() {
     const departments = ref([]); // Liste des départements
-    const selectedDepartment = ref(""); // Département sélectionné
+    const selectedDepartment = ref(""); // Département sélectionné (ID)
+    const selectedDepartmentLabel = ref(""); // Texte du département sélectionné
+    const showOptions = ref(false); // État pour afficher/masquer les options
     const router = useRouter();
 
     const fetchDepartments = async () => {
@@ -42,19 +46,29 @@ export default {
       }
     };
 
-    const goToDepartment = () => {
-  if (selectedDepartment.value) {
-    // Redirige vers l'URL correcte
-    router.push(`/departments/${selectedDepartment.value}`);
-  }
-};
+    const toggleOptions = () => {
+      showOptions.value = !showOptions.value;
+    };
 
+    const selectDepartment = (id, label) => {
+      selectedDepartment.value = id;
+      selectedDepartmentLabel.value = label;
+      showOptions.value = false;
+      router.push(`/departments/${id}`); // Redirige vers le département sélectionné
+    };
 
     onMounted(() => {
       fetchDepartments();
     });
 
-    return { departments, selectedDepartment, goToDepartment };
+    return {
+      departments,
+      selectedDepartment,
+      selectedDepartmentLabel,
+      showOptions,
+      toggleOptions,
+      selectDepartment,
+    };
   },
 };
 </script>
@@ -74,39 +88,91 @@ export default {
 /* Style pour le titre */
 .title {
   font-size: 2.5rem;
-  color: var(--text-primary);
   text-align: center;
   margin: 0;
 }
 
-/* Container pour le select */
-.select-container {
-  width: 100%;
-  max-width: 400px; /* Largeur maximale pour le champ select */
-}
-
-/* Style pour le champ select */
-select.browser-default {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: var(--surface-color);
-  font-size: 1rem;
-  color: var(--text-primary);
-}
-
-#departments {
+/* Container pour le menu déroulant personnalisé */
+.custom-select {
+  position: relative;
+  width: 500px; /* Définissez explicitement une largeur fixe */
   text-align: center;
 }
 
-/* Responsive */
+.select-trigger {
+  width: 100%; /* Utilise toute la largeur de .custom-select */
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #272b2f;
+  color: #eeeeee;
+  font-size: 1rem;
+  border: 1px solid #ff3b34;
+  cursor: pointer;
+  text-align: center;
+  
+}
+
+.options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #272b2f;
+  border: 1px solid #ff3b34;
+  border-radius: 10px;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%; /* Correspond exactement à la largeur du conteneur */
+}
+
+.option {
+  padding: 10px;
+  color: #eeeeee;
+  cursor: pointer;
+  white-space: nowrap; /* Empêche les retours à la ligne */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Ajoute "..." si le texte dépasse */
+}
+
+.option:hover {
+  background-color: #ff3b34;
+  color: #ffffff;
+}
+
+/* === Responsive === */
+
+/* Écran de bureau ou grand écran */
+@media (min-width: 1200px) {
+}
+
+/* Écran d'ordinateur portable (appareils moyens à larges) */
+@media (max-width: 1024px) {
+  .custom-select {
+    max-width: 100%; /* Réduit la largeur maximale */
+    width: 40vw;
+  }
+}
+
+/* Écran de tablette (petits à moyens appareils) */
+@media (max-width: 768px) {
+  .custom-select {
+    max-width: 100%; /* Réduit la largeur maximale */
+    width: 60vw;
+  }
+}
+
+/* Écran de téléphone mobile (petits appareils) */
 @media (max-width: 600px) {
   .title {
-    font-size: 2rem; /* Réduction de la taille du titre sur mobile */
+    font-size: 2rem; /* Réduction de la taille du titre */
   }
-  select.browser-default {
-    font-size: 0.9rem; /* Taille du texte réduite sur mobile */
+  .custom-select {
+    max-width: 100%; /* Réduit la largeur maximale */
+    width: 60vw;
+  }
+  .select-trigger {
+    font-size: 0.9rem; /* Taille du texte réduite */
   }
 }
 </style>

@@ -1,26 +1,14 @@
-:root {
-    /* Couleur principale */
-    --primary-color: #0091EA; /* Bleu principal */
-    --primary-light: #40C4FF; /* Bleu clair */
-    --primary-dark: #01579B; /* Bleu foncé */
-  
-    /* Couleur secondaire */
-    --secondary-color: #3C3C3C; /* Gris principal */
-    --secondary-light: #757575; /* Gris clair */
-    --secondary-dark: #212121; /* Gris foncé */
-  
-    /* Couleurs neutres */
-    --background-color: #FAFAFA; /* Fond général */
-    --surface-color: #FFFFFF; /* Fond des surfaces */
-    --text-primary: #212121; /* Texte principal */
-    --text-secondary: #757575; /* Texte secondaire */
-  
-    /* Actions */
-    --error-color: #D32F2F; /* Rouge pour erreurs */
-    --success-color: #9eb19f; /* Vert pour succès */
-    --warning-color: #FBC02D; /* Jaune pour avertissements */
-  }
-  
+/* Liste des couleurs utilisées 
+
+Noir Principal : #25282B
+Gris foncé : #272B2F
+Gris clair : #949698
+Rouge orangé : #ff3b34
+Jaune : #FEBC2C
+Blanc : #eeeeee
+
+*/
+
 
 /* Reset CSS */
 * {
@@ -32,8 +20,8 @@
 /* Styles globaux */
 body {
   font-family: "Arial", sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: #25282B;
+  color: #eeeeee;
 }
 
 a {

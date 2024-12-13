@@ -1,7 +1,6 @@
 <template>
     <div class="admin-dashboard">
       <h1>Tableau de bord Administrateur</h1>
-      <p>Bienvenue dans l'espace administrateur. Vous pouvez gérer les circuits ici.</p>
       <!-- Ajoutez ici le contenu spécifique pour l'administrateur -->
     </div>
   </template>

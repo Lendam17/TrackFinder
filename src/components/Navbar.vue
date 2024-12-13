@@ -1,36 +1,36 @@
 <template>
-  <nav class="navbar">
-    <div class="nav-wrapper container">
-      <!-- Logo -->
-      <a href="#" class="brand-logo">TrackFinder</a>
-
-      <!-- Bouton Hamburger pour mobile -->
-      <a href="#" data-target="mobile-menu" class="sidenav-trigger right">
+  <nav>
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo">TrackFinder</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger right">
         <i class="material-icons">menu</i>
       </a>
-
-      <!-- Menu Desktop -->
-      <ul class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><router-link to="/">Accueil</router-link></li>
         <li><router-link to="/contact">Contact</router-link></li>
-        <li v-if="!authStore.isAuthenticated">
-          <router-link to="/login" id="btn-connexion-pc" class="btn btn-flat">Connexion</router-link>
+        <li v-if="isAuthenticated && isAdmin">
+          <router-link to="/admin-dashboard">Dashboard</router-link>
+        </li>
+        <li v-if="isAuthenticated">
+          <a id="btn-connexion-pc" @click="logout">Déconnexion</a>
         </li>
         <li v-else>
-          <button @click="logout" id="btn-connexion-pc" class="btn btn-flat">Déconnexion</button>
+          <router-link id="btn-connexion-pc" to="/login">Connexion</router-link>
         </li>
       </ul>
     </div>
-
-    <!-- Menu Mobile -->
-    <ul class="sidenav right" id="mobile-menu">
-      <li><router-link to="/" @click="closeMenu">Accueil</router-link></li>
-      <li><router-link to="/contact" @click="closeMenu">Contact</router-link></li>
-      <li v-if="!authStore.isAuthenticated">
-        <router-link to="/login" id="btn-connexion-mobile" class="btn btn-flat" @click="closeMenu">Connexion</router-link>
+    <!-- Menu mobile -->
+    <ul class="sidenav" id="mobile-demo">
+      <li><router-link to="/">Accueil</router-link></li>
+      <li><router-link to="/contact">Contact</router-link></li>
+      <li v-if="isAuthenticated && isAdmin">
+        <router-link to="/admin-dashboard">Dashboard</router-link>
+      </li>
+      <li v-if="isAuthenticated">
+        <a id="btn-connexion-mobile" @click="logout">Déconnexion</a>
       </li>
       <li v-else>
-        <button @click="logout" id="btn-connexion-mobile" class="btn btn-flat">Déconnexion</button>
+        <router-link id="btn-connexion-mobile" to="/login">Connexion</router-link>
       </li>
     </ul>
   </nav>
@@ -38,38 +38,36 @@
 
 <script>
 import { useAuthStore } from "../stores/auth";
-import { onMounted } from "vue";
+import M from "materialize-css";
 
 export default {
+  name: "Navbar",
   setup() {
     const authStore = useAuthStore();
 
     const logout = () => {
       authStore.logout();
-      window.location.href = "/";
+      window.location.href = "/"; // Redirige après déconnexion
     };
 
-    const closeMenu = () => {
-      const sidenavInstance = M.Sidenav.getInstance(document.querySelector(".sidenav"));
-      if (sidenavInstance) {
-        sidenavInstance.close();
-      }
+    return {
+      isAuthenticated: authStore.isAuthenticated,
+      isAdmin: authStore.isAdmin,
+      logout,
     };
-
-    onMounted(() => {
-      const elems = document.querySelectorAll(".sidenav");
-      M.Sidenav.init(elems, { edge: "right" }); // Positionné à droite
-    });
-
-    return { authStore, logout, closeMenu };
+  },
+  mounted() {
+    // Initialiser le menu mobile Materialize
+    const elems = document.querySelectorAll(".sidenav");
+    M.Sidenav.init(elems);
   },
 };
 </script>
 
 <style scoped>
 /* Navbar principale */
-.navbar {
-  background-color: var(--primary-color); /* Couleur principale de la navbar */
+.nav-wrapper {
+  background-color: #25282B; /* Couleur principale */
   padding: 0 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -77,57 +75,72 @@ export default {
 /* Logo */
 .brand-logo {
   font-size: 1.5rem;
-  color: var(--surface-color); /* Couleur blanche */
+  color: #ff3b34; 
   text-transform: uppercase;
   font-weight: bold;
 }
 
-/* Positionnement du bouton hamburger */
-.sidenav-trigger {
-  position: absolute;
-  right: 20px; /* Positionné à droite */
-  color: var(--surface-color); /* Icône blanche */
-  cursor: pointer;
-}
-
-/* Liens du menu desktop */
+/* Menu desktop */
 ul.hide-on-med-and-down li a {
-  color: var(--surface-color); /* Couleur des liens */
+  color: #949698; /* Couleur des liens */
   font-size: 1rem;
-  text-transform: uppercase;
   padding: 0 15px;
-  font-weight: 500;
-}
-
-/* Bouton Connexion */
-#btn-connexion-pc {
-  background-color: var(--surface-color); /* Fond blanc */
-  color: var(--primary-color) !important; /* Texte bleu */
-  border-radius: 20px;
-  text-transform: uppercase;
   font-weight: 600;
 }
 
-/* Menu mobile */
-.sidenav {
-  background-color: var(--primary-color); /* Fond bleu */
-  color: var(--surface-color); /* Texte blanc */
-  text-align: center;
+
+#btn-connexion-pc {
+  background-color: #ff3b34; /* Couleur principale */
+  color: #ffffff !important; /* Couleur du texte */
+  border: none; /* Supprime toute bordure par défaut */
+  border-radius: 1px; /* Coins légèrement arrondis */
+  font-size: 1rem; /* Taille du texte */
+  font-weight: bold; /* Texte en gras */
+  cursor: pointer; /* Change le curseur en mode pointeur */
+  text-align: center; /* Centrer le texte */
+  text-decoration: none; /* Supprime le soulignement */
 }
 
-.sidenav.right {
-  transform: translateX(100%); /* Par défaut caché à droite */
+#btn-connexion-pc:hover {
+  background-color: #fd221b; /* Couleur au survol */
+  transition: background-color 0.3s ease; /* Transition fluide */
 }
 
+
+/* Hover pour les liens */
+ul.hide-on-med-and-down li a:hover,
+.sidenav li a:hover {
+  color: #ff3b34;
+  transition: color 0.3s ease;
+}
+
+/* Menu Mobile */
 .sidenav li a {
   text-align: center;
-  color: var(--surface-color); /* Couleur des liens */
   font-size: 1rem;
-  text-transform: uppercase;
 }
 
 #btn-connexion-mobile {
-  background-color: var(--surface-color); /* Fond blanc */
-  color: var(--primary-color);
+  background-color: #ff3b34; /* Couleur principale */
+  color: #ffffff !important; /* Couleur du texte */
 }
+#btn-connexion-mobile:hover {
+  background-color: #fd221b; /* Couleur principale */
+  transition: background-color 0.3s ease; /* Transition fluide */
+}
+
+/* Icône hamburger du menu mobile */
+.sidenav-trigger {
+  display: none; /* Caché par défaut */
+}
+
+/* Afficher uniquement l'icone hamburger sur mobile et tablette */
+@media (max-width: 992px) {
+  .sidenav-trigger {
+    display: block; /* Affiché uniquement sur les écrans <= 992px */
+    color: var(--surface-color);
+    font-size: 2rem;
+  }
+}
+
 </style>

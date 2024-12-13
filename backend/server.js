@@ -56,6 +56,7 @@ app.get("/tracks", (req, res) => {
     SELECT 
       t.id,
       t.name,
+      t.city,
       t.terrain_type,
       COALESCE(GROUP_CONCAT(DISTINCT tt.type), '') AS track_types,
       COALESCE(GROUP_CONCAT(DISTINCT va.vehicle_type), '') AS vehicles_allowed
