@@ -36,7 +36,12 @@
         <fieldset>
           <legend>Informations générales</legend>
           <label for="name">Nom :</label>
-          <input v-model="selectedCircuit.name" id="name" type="text" required />
+          <input
+            v-model="selectedCircuit.name"
+            id="name"
+            type="text"
+            required
+          />
 
           <label for="description">Description :</label>
           <textarea
@@ -50,7 +55,12 @@
         <fieldset>
           <legend>Localisation</legend>
           <label for="city">Ville :</label>
-          <input v-model="selectedCircuit.city" id="city" type="text" required />
+          <input
+            v-model="selectedCircuit.city"
+            id="city"
+            type="text"
+            required
+          />
 
           <label for="street_address">Adresse :</label>
           <input
@@ -68,6 +78,68 @@
           />
         </fieldset>
 
+        <!-- Propriétaire -->
+        <fieldset>
+          <legend>Contact du Propriétaire</legend>
+          <label for="owner_email">Email :</label>
+          <input
+            v-model="selectedCircuit.owner_email"
+            id="owner_email"
+            type="email"
+          />
+
+          <label for="owner_phone">Téléphone :</label>
+          <input
+            v-model="selectedCircuit.owner_phone"
+            id="owner_phone"
+            type="text"
+          />
+        </fieldset>
+
+        <!-- Dimensions -->
+        <fieldset>
+          <legend>Dimensions</legend>
+          <label for="length">Longueur totale (en mètres) :</label>
+          <input v-model="selectedCircuit.length" id="length" type="number" />
+
+          <label for="width">Largeur de piste (en mètres) :</label>
+          <input v-model="selectedCircuit.width" id="width" type="number" />
+        </fieldset>
+
+        <!-- Type de terrain -->
+        <section>
+          <h3>Type de terrain</h3>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                value="Terre"
+                v-model="selectedCircuit.terrain_type"
+                @change="updateTerrainType('Terre')"
+              />
+              <span>Terre</span>
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                value="Sable"
+                v-model="selectedCircuit.terrain_type"
+                @change="updateTerrainType('Sable')"
+              />
+              <span>Sable</span>
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                value="Mixte"
+                v-model="selectedCircuit.terrain_type"
+                @change="updateTerrainType('Mixte')"
+              />
+              <span>Mixte</span>
+            </label>
+          </div>
+        </section>
+
         <!-- Sauvegarde -->
         <div class="actions">
           <button type="submit" class="save-button">Sauvegarder</button>
@@ -76,6 +148,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 
@@ -108,7 +181,10 @@ export default {
           this.selectedCircuit = response.data; // Pré-remplir les champs
         })
         .catch((error) => {
-          console.error("Erreur lors de la récupération des détails du circuit :", error);
+          console.error(
+            "Erreur lors de la récupération des détails du circuit :",
+            error
+          );
           alert("Impossible de charger les détails du circuit.");
         });
     },
@@ -166,5 +242,4 @@ button {
 button:hover {
   background-color: #e0322e;
 }
-
 </style>
