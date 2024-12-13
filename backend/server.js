@@ -31,6 +31,89 @@ app.get("/", (req, res) => {
   res.send("Backend API fonctionne !");
 });
 
+// Nouvelle route pour récupérer tous les circuits (nom et ville uniquement)
+app.get('/admin-tracks', (req, res) => {
+  const query = `
+    SELECT id, name, city
+    FROM tracks;
+  `;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Erreur lors de la récupération des circuits :", err);
+      return res.status(500).json({ error: "Erreur interne du serveur." });
+    }
+    res.json(results); // Renvoie uniquement les champs nécessaires
+  });
+});
+
+// Route pour mettre à jour les informations d'un circuit
+app.put('/track/:id', (req, res) => {
+  const trackId = req.params.id;
+  const {
+    name,
+    description,
+    city,
+    street_address,
+    gps_coordinates,
+    owner_email,
+    owner_phone,
+    length,
+    width,
+    terrain_type,
+  } = req.body;
+
+  // Vérification des champs obligatoires
+  if (!name || !description || !city || !street_address || !terrain_type) {
+    return res.status(400).json({ error: 'Les champs obligatoires sont manquants.' });
+  }
+
+  // Requête SQL pour mettre à jour les informations
+  const query = `
+    UPDATE tracks
+    SET 
+      name = ?,
+      description = ?,
+      city = ?,
+      street_address = ?,
+      gps_coordinates = ?,
+      owner_email = ?,
+      owner_phone = ?,
+      length = ?,
+      width = ?,
+      terrain_type = ?
+    WHERE id = ?;
+  `;
+
+  const values = [
+    name,
+    description,
+    city,
+    street_address,
+    gps_coordinates || null,
+    owner_email || null,
+    owner_phone || null,
+    length || null,
+    width || null,
+    terrain_type,
+    trackId,
+  ];
+
+  db.query(query, values, (err, results) => {
+    if (err) {
+      console.error("Erreur SQL lors de la mise à jour du circuit :", err);
+      return res.status(500).json({ error: "Erreur interne du serveur." });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Circuit non trouvé." });
+    }
+
+    res.json({ message: "Circuit mis à jour avec succès." });
+  });
+});
+
+
+
 // Récupérer tous les départements
 app.get("/departments", (req, res) => {
   const query = "SELECT * FROM departments";
@@ -121,10 +204,6 @@ app.get("/track/:id", (req, res) => {
     res.json(results[0]);
   });
 });
-
-
-
-
 
 
 
