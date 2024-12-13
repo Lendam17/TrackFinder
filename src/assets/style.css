@@ -42,35 +42,18 @@ button {
   cursor: pointer;
 }
 
+/* Style de la barre de défilement */
+::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre */
+  height: 8px; /* Hauteur pour le scroll horizontal */
+}
 
-/* Style global pour les barres de défilement */
-:root {
-    --scrollbar-bg: var(--secondary-light); /* Couleur de la piste */
-    --scrollbar-thumb: var(--secondary-dark); /* Couleur de la glissière */
-  }
-  
-  /* Style de la barre de défilement */
-  ::-webkit-scrollbar {
-    width: 8px; /* Largeur verticale */
-    height: 8px; /* Hauteur horizontale */
-  }
-  
-  /* Piste de la barre de défilement */
-  ::-webkit-scrollbar-track {
-    background: var(--scrollbar-bg); /* Couleur de la piste */
-  }
-  
-  /* Glissière de la barre de défilement */
-  ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb); /* Couleur de la glissière */
-    border-radius: 10px;
-    border: 2px solid transparent; /* Espace autour de la glissière */
-    background-clip: padding-box; /* Crée un effet d'espace autour */
-  }
-  
-  /* Barres de défilement sur les conteneurs spécifiques (optionnel) */
-  .container {
-    scrollbar-width: thin; /* Firefox: largeur fine */
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg); /* Firefox: couleurs */
-  }
-  
+/* défilement de la liste */
+::-webkit-scrollbar-thumb {
+  background-color: #ff3b34; /* Couleur de la barre */
+  border-radius: 4px; /* Arrondi de la barre */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #25282B; /* Couleur de l'arrière-plan */
+}

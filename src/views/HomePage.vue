@@ -101,8 +101,8 @@ export default {
 
 .select-trigger {
   width: 100%; /* Utilise toute la largeur de .custom-select */
+  border-radius: 2px;
   padding: 10px;
-  border-radius: 10px;
   background-color: #272b2f;
   color: #eeeeee;
   font-size: 1rem;
@@ -119,7 +119,7 @@ export default {
   right: 0;
   background-color: #272b2f;
   border: 1px solid #ff3b34;
-  border-radius: 10px;
+  border-radius: 2px;
   z-index: 10;
   max-height: 200px;
   overflow-y: auto;
